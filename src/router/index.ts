@@ -1,12 +1,12 @@
 import express from 'express'
 import authentication from './authentication'
-import { register } from '../controllers/authentication'
+import users from './users'
 
 const router = express.Router()
 
 export default (): express.Router => {
     authentication(router)
-    router.post('/auth/register-test', register)
+    users(router)
 
     return router
 }

@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express'
 import { createUser, getUserByEmail, getUserByUsername } from '../db/users'
 import { authentication, random } from '../helpers'
+import { identity, merge } from 'lodash'
 
 export const register = async (
     req: Request,
@@ -80,6 +81,8 @@ export const login = async (
             domain: 'localhost',
             path: '/',
         })
+
+        merge(req, { identity: existingUser })
 
         res.status(200).json(existingUser).end()
     } catch (e) {
