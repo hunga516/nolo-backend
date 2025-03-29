@@ -1,4 +1,6 @@
 import express from 'express'
+import { db } from '../db/index'
+import {usersTable} from '../db/schema'
 
 import { deleteUserById, getUserById, getUsers } from '../db/users'
 import { get } from 'lodash'
@@ -50,5 +52,19 @@ export const updateUser = async (
     } catch (error) {
         console.log(error)
         return res.sendStatus(400)
+    }
+}
+
+export const getUserPostGres = async (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+) => {
+    try {
+        const data = await db.select().from(usersTable).limit(1)
+        return res.status(200).json(data).end()
+    }
+    catch (error) {
+        console.log(error)
     }
 }
