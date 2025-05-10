@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express'
 import { createUser, getUserByEmail, getUserByUsername } from '../db/users'
 import { authentication, random } from '../helpers'
 import { identity, merge } from 'lodash'
+import jwt from 'jsonwebtoken'
 
 export const register = async (
     req: Request,
@@ -71,20 +72,18 @@ export const login = async (
         }
 
         const salt = random()
-        existingUser.authentication.sessionToken = authentication(
-            salt,
-            existingUser._id.toString()
-        )
+        existingUser.authentication.salt = salt
+        existingUser.authentication.password = authentication(salt, password)
         await existingUser.save()
-
-        res.cookie('LENGOCLOC-AUTH', existingUser.authentication.sessionToken, {
-            domain: 'localhost',
-            path: '/',
-        })
 
         merge(req, { identity: existingUser })
 
-        res.status(200).json(existingUser).end()
+        const token = jwt.sign(existingUser.toObject(), 'LENGOCLOC', { expiresIn: '1h' })
+
+        res.status(200).json({
+            user: existingUser,
+            token
+        }).end()
     } catch (e) {
         console.log(e)
         return res.sendStatus(400)

@@ -2,7 +2,7 @@ import express from 'express'
 import { db } from '../db/index'
 import {usersTable} from '../db/schema'
 
-import { deleteUserById, getUserById, getUsers } from '../db/users'
+import { deleteUserById, getUserById, getUsers, UserModel, updateUser } from '../db/users'
 import { get } from 'lodash'
 
 export const getAllUsers = async (
@@ -36,17 +36,16 @@ export const deleteUser = async (
     }
 }
 
-export const updateUser = async (
+export const editUser = async (
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
 ) => {
     try {
         const { id } = req.params
-        const { username } = req.body
-        const user = await getUserById(id)
-        user.username = username
-        user.save()
+        const { email } = req.body
+        
+        const user = await updateUser(id, {email})
 
         return res.status(200).json(user).end()
     } catch (error) {

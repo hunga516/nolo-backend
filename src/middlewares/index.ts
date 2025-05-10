@@ -1,7 +1,7 @@
 import express from 'express'
 import { get, identity, merge } from 'lodash'
-
-import { getUserBySessionToken } from '../db/users'
+import jwt from 'jsonwebtoken'
+import e from 'express'
 
 export const isOwner = async (
     req: express.Request,
@@ -34,19 +34,19 @@ export const isAuthenticated = async (
     next: express.NextFunction
 ) => {
     try {
-        const sessionToken = req.cookies['LENGOCLOC-AUTH']
-
-        if (!sessionToken) {
-            return res.sendStatus(500)
-        }
-
-        const existingUser = await getUserBySessionToken(sessionToken)
-
-        if (!existingUser) {
+        const authHeader = req.headers['authorization']
+        if (!authHeader) {
             return res.sendStatus(401)
         }
 
-        merge(req, { identity: existingUser })
+        const token = authHeader.split(' ')[1]
+        if (!token) {
+            return res.sendStatus(401)
+        }
+
+        const userDecoded = jwt.verify(token, 'LENGOCLOC')
+
+        merge(req, { identity: userDecoded })
 
         return next()
     } catch (error) {

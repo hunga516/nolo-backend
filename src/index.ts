@@ -5,7 +5,8 @@ import cookieParser from 'cookie-parser'
 import compression from 'compression'
 import cors from 'cors'
 import * as mongoose from 'mongoose'
-import router from './router'
+import setupRoutes from './router'
+import { authentication } from './helpers'
 
 const app = express()
 
@@ -36,4 +37,4 @@ const connectDB = async () => {
 }
 connectDB()
 
-app.use('/', router())
+app.use('/', setupRoutes())
