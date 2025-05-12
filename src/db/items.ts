@@ -10,4 +10,6 @@ const ItemSchema = new mongoose.Schema({
 
 export const ItemModel =  mongoose.model('Item', ItemSchema)
 
+export const readAllItems = () => ItemModel.find()
+export const readItemById = (id: string) => ItemModel.findById(id)
 

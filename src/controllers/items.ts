@@ -1,7 +1,7 @@
 import express from 'express';
 import fs from 'fs/promises';
 import cloudinary from '../helpers/cloudinary';
-import { ItemModel } from '../db/items';
+import { ItemModel, readAllItems, readItemById } from '../db/items';
 
 export const createItemController = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const { name, description } = req.body;
@@ -27,6 +27,30 @@ export const createItemController = async (req: express.Request, res: express.Re
         await newItem.save();
 
         res.json({ message: 'Vật phẩm mới đã được thêm', item: newItem });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+export const getAllItemsController = async (req: express.Request, res: express.Response, next: express.NextFunction) => { 
+    try {
+        const items = await readAllItems();
+        res.json({message: 'Lấy danh sách vật phẩm thành công', items});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+export const getItemByIdController = async (req: express.Request, res: express.Response, next: express.NextFunction) => { 
+    const { id } = req.params;
+    try {
+        const item = await readItemById(id);
+        if (!item) {
+            return res.status(404).json({ message: 'Item not found' });
+        }
+        res.json({ message: 'Lấy vật phẩm thành công', item });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Internal server error' });

@@ -22,7 +22,8 @@ app.use(bodyParser.json())
 
 const server = http.createServer(app)
 
-server.listen(8080, () => console.log('Server is running on port 8080'))
+const PORT = process.env.PORT || 8080
+server.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
 
 const MONGODB_URL =
     'mongodb+srv://hunga5160:hunga5160@cluster0.0uxnqct.mongodb.net/vi_video?retryWrites=true&w=majority'
