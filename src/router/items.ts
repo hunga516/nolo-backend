@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 import { createItemController, getAllItemsController, getItemByIdController } from '../controllers/items';
+import { InventoryModel } from 'db/inventorys';
 
 const upload = multer({ dest: 'uploads/' });
 
@@ -26,6 +27,12 @@ export default function itemsRouter(router: express.Router) {
             //     accumulated: 0,
             //     id: 12741070
             // }
+
+            
+
+            const newInventory = new InventoryModel({
+
+            })
             
             
             res.status(200).json({ message: 'Webhook received' });

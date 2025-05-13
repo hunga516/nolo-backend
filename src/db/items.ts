@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const ItemSchema = new mongoose.Schema({
     name: {type: String},
     description: {type: String},
-    imageUrl: {type: String}
+    imageUrl: {type: String},
+    price: {type: Number, default: 0},
 }, {
     timestamps: true
 })
