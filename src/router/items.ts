@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 import { createItemController, getAllItemsController, getItemByIdController } from '../controllers/items';
-import { InventoryModel } from 'db/inventorys';
+import { InventoryModel } from '../db/inventorys';
 
 const upload = multer({ dest: 'uploads/' });
 
