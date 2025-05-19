@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express'
-import { createUser, getUserByEmail, getUserByUsername } from '../db/users'
+import { createUser, getUserByEmail, getUserByUsername } from '../db/user'
 import { authentication, random } from '../helpers'
 import { identity, merge } from 'lodash'
 import jwt from 'jsonwebtoken'
@@ -10,7 +10,7 @@ export const register = async (
     next: NextFunction
 ) => {
     try {
-        const { username, password, email } = req.body
+        const { username, password, email, clerkId } = req.body
         if (!username || !password || !email) {
             return res.sendStatus(400)
         }
@@ -29,6 +29,7 @@ export const register = async (
         const user = await createUser({
             email,
             username,
+            clerkId,
             authentication: {
                 salt,
                 password: authentication(salt, password),

@@ -2,10 +2,9 @@ import express from 'express'
 import { db } from '../db/index'
 import {usersTable} from '../db/schema'
 
-import { deleteUserById, getUserById, getUsers, UserModel, updateUser } from '../db/users'
-import { get } from 'lodash'
+import { deleteUserById, getUserById, getUsers, UserModel, updateUser } from '../db/user'
 
-export const getAllUsers = async (
+export const readAllUsersController = async (
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
@@ -20,7 +19,7 @@ export const getAllUsers = async (
     }
 }
 
-export const deleteUser = async (
+export const deleteUserController = async (
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
@@ -36,7 +35,7 @@ export const deleteUser = async (
     }
 }
 
-export const editUser = async (
+export const updateUserController = async (
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
@@ -54,16 +53,16 @@ export const editUser = async (
     }
 }
 
-export const getUserPostGres = async (
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-) => {
-    try {
-        const data = await db.select().from(usersTable).limit(1)
-        return res.status(200).json(data).end()
-    }
-    catch (error) {
-        console.log(error)
-    }
-}
+// export const readUserPostGresController = async (
+//     req: express.Request,
+//     res: express.Response,
+//     next: express.NextFunction
+// ) => {
+//     try {
+//         const data = await db.select().from(usersTable).limit(1)
+//         return res.status(200).json(data).end()
+//     }
+//     catch (error) {
+//         console.log(error)
+//     }
+// }

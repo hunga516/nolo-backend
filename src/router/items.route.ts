@@ -1,15 +1,15 @@
 import express, { Request, Response, NextFunction } from 'express';
 import multer from 'multer';
-import { createItemController, getAllItemsController, getItemByIdController } from '../controllers/items';
-import { InventoryModel } from '../db/inventorys';
+import { createItemController, readAllItemsController, readItemByIdController, } from '../controllers/items.controller';
+import { InventoryModel } from '../db/inventory';
 
 const upload = multer({ dest: 'uploads/' });
 
 
 export default function itemsRouter(router: express.Router) {
     router.post('/items', upload.single('image'), createItemController);
-    router.get('/items', getAllItemsController);
-    router.get('/items/:id', getItemByIdController);
+    router.get('/items', readAllItemsController);
+    router.get('/items/:id', readItemByIdController);
 
     router.post('/items/webhook', (req: Request, res: Response, next: NextFunction) => {
         try {

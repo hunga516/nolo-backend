@@ -1,7 +1,7 @@
 import express from 'express';
 import fs from 'fs/promises';
 import cloudinary from '../helpers/cloudinary';
-import { ItemModel, readAllItems, readItemById } from '../db/items';
+import { ItemModel, readAllItems, readItemById } from '../db/item';
 
 export const createItemController = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const { name, description } = req.body;
@@ -33,7 +33,7 @@ export const createItemController = async (req: express.Request, res: express.Re
     }
 }
 
-export const getAllItemsController = async (req: express.Request, res: express.Response, next: express.NextFunction) => { 
+export const readAllItemsController = async (req: express.Request, res: express.Response, next: express.NextFunction) => { 
     try {
         const items = await readAllItems();
         res.json({message: 'Lấy danh sách vật phẩm thành công', items});
@@ -43,7 +43,7 @@ export const getAllItemsController = async (req: express.Request, res: express.R
     }
 }
 
-export const getItemByIdController = async (req: express.Request, res: express.Response, next: express.NextFunction) => { 
+export const readItemByIdController = async (req: express.Request, res: express.Response, next: express.NextFunction) => { 
     const { id } = req.params;
     try {
         const item = await readItemById(id);

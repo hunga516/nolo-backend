@@ -1,13 +1,15 @@
 import express from 'express'
 import authenticationRouter from './authentication'
-import userRoute from './users'
-import itemsRouter from './items'
+import itemsRouter from './items.route'
+import inventoriesRouter from './inventories.route'
+import usersRoute from './users.route'
 
 const router = express.Router()
 
 export default function setupRoutes(): express.Router {
     authenticationRouter(router)
-    userRoute(router)
+    usersRoute(router)
     itemsRouter(router)
+    inventoriesRouter(router)
     return router
 }
