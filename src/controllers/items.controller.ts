@@ -2,6 +2,7 @@ import express from 'express';
 import fs from 'fs/promises';
 import cloudinary from '../helpers/cloudinary';
 import { ItemModel, readAllItems, readItemById } from '../db/item';
+import { createMuxAsset } from '../lib/mux.lib';
 
 export const createItemController = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const { name, description } = req.body;
@@ -12,10 +13,10 @@ export const createItemController = async (req: express.Request, res: express.Re
     }
 
     try {
-      const uploadResult = await cloudinary.uploader
-        .upload(req.file.path, {
-            public_id: req.file.filename,
-            })  
+        const uploadResult = await cloudinary.uploader
+            .upload(req.file.path, {
+                public_id: req.file.filename,
+            })
 
         await fs.unlink(req.file.path)
 
@@ -33,17 +34,17 @@ export const createItemController = async (req: express.Request, res: express.Re
     }
 }
 
-export const readAllItemsController = async (req: express.Request, res: express.Response, next: express.NextFunction) => { 
+export const readAllItemsController = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const items = await readAllItems();
-        res.json({message: 'Lấy danh sách vật phẩm thành công', items});
+        res.json({ message: 'Lấy danh sách vật phẩm thành công', items });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Internal server error' });
     }
 }
 
-export const readItemByIdController = async (req: express.Request, res: express.Response, next: express.NextFunction) => { 
+export const readItemByIdController = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const { id } = req.params;
     try {
         const item = await readItemById(id);
