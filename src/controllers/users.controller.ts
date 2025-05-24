@@ -1,8 +1,8 @@
 import express from 'express'
 import { db } from '../db/index'
-import {usersTable} from '../db/schema'
+import { usersTable } from '../db/schema'
 
-import { deleteUserById, getUserById, getUsers, UserModel, updateUser } from '../db/user'
+import { deleteUserById, getUserById, getUsers, UserModel, updateUser, readUserByClerkId } from '../db/user'
 
 export const readAllUsersController = async (
     req: express.Request,
@@ -43,13 +43,29 @@ export const updateUserController = async (
     try {
         const { id } = req.params
         const { email } = req.body
-        
-        const user = await updateUser(id, {email})
+
+        const user = await updateUser(id, { email })
 
         return res.status(200).json(user).end()
     } catch (error) {
         console.log(error)
         return res.sendStatus(400)
+    }
+}
+
+export const readUserByClerkIdController = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const { clerkId } = req.params
+
+    try {
+        const user = await readUserByClerkId(clerkId)
+
+        res.json({
+            message: 'lay thong tin ngoi dung thanh cong',
+            user
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(401)
     }
 }
 

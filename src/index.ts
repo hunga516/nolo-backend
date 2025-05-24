@@ -7,6 +7,7 @@ import cors from 'cors'
 import * as mongoose from 'mongoose'
 import setupRoutes from './router'
 import { authentication } from './helpers'
+import morgan from 'morgan'
 
 const app = express()
 
@@ -19,6 +20,11 @@ app.use(
 app.use(compression())
 app.use(cookieParser())
 app.use(express.json())
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`, req.body)
+    next()
+})
+
 
 
 const server = http.createServer(app)

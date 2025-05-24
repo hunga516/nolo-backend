@@ -10,7 +10,7 @@ export const register = async (
     next: NextFunction
 ) => {
     try {
-        const { username, password, email, clerkId } = req.body
+        const { username, password, email, clerkId, imageUrl, name, } = req.body
         if (!username || !password || !email) {
             return res.sendStatus(400)
         }
@@ -30,6 +30,8 @@ export const register = async (
             email,
             username,
             clerkId,
+            imageUrl,
+            name,
             authentication: {
                 salt,
                 password: authentication(salt, password),
