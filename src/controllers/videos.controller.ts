@@ -13,13 +13,15 @@ export const webhookController = async (req: express.Request, res: express.Respo
             break;
         case 'video.live_stream.created':
             const { id: muxPlayBackId } = req.body.data.playback_ids[0]
+            const { stream_key: muxStreamKey } = req.body.data
 
             const muxPreviewUrl = `https://image.mux.com/${muxPlayBackId}/animated.gif`
             const muxThumbnailUrl = `https://image.mux.com/${muxPlayBackId}/thumbnail.png`
 
-            const newVideo = await updateVideo(muxPlayBackId, {
+            await updateVideo(muxPlayBackId, {
                 muxPreviewUrl,
                 muxThumbnailUrl,
+                muxStreamKey
             })
             break;
         default:

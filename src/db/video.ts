@@ -5,6 +5,7 @@ const VideoSchema = new mongoose.Schema({
     author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     clerkId: { type: String },
     muxPlayBackId: { type: String },
+    muxStreamKey: { type: String },
     // muxDuration:
     muxPreviewUrl: { type: String },
     muxThumbnailUrl: { type: String },
