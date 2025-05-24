@@ -28,6 +28,11 @@ export const readAllVideos = async () => {
     return VideoModel.find().lean()
 }
 
+export const readVideoById = async (_id: string) => {
+    return VideoModel.findById(_id)
+}
+
 export const updateVideo = async (muxPlayBackId: string, body: Partial<VideoType>) => {
     return VideoModel.findOneAndUpdate({ muxPlayBackId }, body, { new: true })
 }
+

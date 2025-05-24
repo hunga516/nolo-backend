@@ -1,6 +1,6 @@
 import express from 'express';
 import { createMuxAsset, createMuxLiveStream } from '../lib/mux.lib';
-import { createVideo, readAllVideos, updateVideo } from '../db/video';
+import { createVideo, readAllVideos, readVideoById, updateVideo } from '../db/video';
 
 export const uploadController = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const response = await createMuxAsset()
@@ -53,6 +53,20 @@ export const readAllVideosController = async (req: express.Request, res: express
         res.json({
             message: "lay all video thanh cong",
             videos: allVideo
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(401)
+    }
+}
+
+export const readVideoByIdController = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const { _id } = req.params
+    try {
+        const video = await readVideoById(_id)
+        res.json({
+            message: "lay all video thanh cong",
+            video: video
         })
     } catch (error) {
         console.log(error);
