@@ -8,6 +8,7 @@ import * as mongoose from 'mongoose'
 import setupRoutes from './router'
 import { authentication } from './helpers'
 import morgan from 'morgan'
+import { initSocket } from './socket'
 
 const app = express()
 
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 
 
 const server = http.createServer(app)
+const io = initSocket(server)
 
 const PORT = process.env.PORT || 8080
 server.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
