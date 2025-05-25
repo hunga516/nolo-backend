@@ -6,7 +6,7 @@ let io: Server | null = null
 export const initSocket = (server: http.Server) => {
     io = new Server(server, {
         cors: {
-            origin: "http://localhost:3000",
+            origin: process.env.NEXT_FRONTEND_URL,
             methods: ["GET", "POST"],
             credentials: true,
         }
@@ -19,9 +19,10 @@ export const initSocket = (server: http.Server) => {
         console.log(`User connected vào live stream ${videoId}`)
         socket.join(videoId)
 
-        socket.on('create-message', (message) => {
+        socket.on('create-message', ({ messageSend, userSendImage }) => {
             // socket.to(videoId).emit('receive-create-message', message)
-            liveStreamNamespace.to(videoId).emit('receive-create-message', message)
+            // console.log(userSendImage);
+            liveStreamNamespace.to(videoId).emit('receive-create-message', { messageSend, userSendImage })
         })
 
         socket.on('disconnect', () => {
@@ -46,4 +47,11 @@ export const emitToVideoRoom = (videoId: string, event: string, data: any) => {
         return
     }
     io.of('/live-stream').to(videoId).emit(event, data)
+}
+
+export const getIo = (): Server => {
+    if (!io) {
+        throw new Error('Socket.io chưa được khởi tạo')
+    }
+    return io
 }

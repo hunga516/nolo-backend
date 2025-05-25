@@ -1,6 +1,7 @@
 import express from 'express';
 import { createMuxAsset, createMuxLiveStream } from '../lib/mux.lib';
 import { createVideo, readAllVideos, readVideoById, updateVideo } from '../db/video';
+import { getIo } from '../socket';
 
 export const uploadController = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const response = await createMuxAsset()
@@ -23,6 +24,9 @@ export const webhookController = async (req: express.Request, res: express.Respo
                 muxThumbnailUrl,
                 muxStreamKey
             })
+
+            const io = getIo()
+            io.emit('create-livestream', muxStreamKey)
             break;
         default:
             break;
