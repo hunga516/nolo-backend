@@ -19,12 +19,12 @@ export const readInventoryByUserId = async (userId: string, clerkId: string) => 
     return await InventoryModel.findOne({ userId, clerkId }).populate('itemId').populate('userId')
 }
 
-export const readAllInventoriesByUserId = async (userId: string, clerkId: string) => {
-    return await InventoryModel.find({ userId, clerkId }).populate('itemId').populate('userId')
+export const readAllInventoriesByUserId = async (userId: string) => {
+    return await InventoryModel.find({ userId }).populate('itemId').populate('userId')
 }
 
-export const readInventoryByUserIdAndItemId = async (userId: string, clerkId: string, itemId: string) => {
-    return await InventoryModel.findOne({ userId, clerkId, itemId }).populate('itemId').populate('userId')
+export const readInventoryByUserIdAndItemId = async (userId: string, itemId: string) => {
+    return await InventoryModel.findOne({ userId, itemId }).populate('itemId').populate('userId')
 }
 
 export const readAllInventoriesByClerkId = async (clerkId: string) => {

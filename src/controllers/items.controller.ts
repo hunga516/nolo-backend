@@ -5,7 +5,7 @@ import { ItemModel, readAllItems, readItemById } from '../db/item';
 import { createMuxAsset } from '../lib/mux.lib';
 
 export const createItemController = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    const { name, description } = req.body;
+    const { name, description, price } = req.body;
     const { file } = req;
 
     if (!file) {
@@ -24,6 +24,7 @@ export const createItemController = async (req: express.Request, res: express.Re
             name,
             description,
             imageUrl: uploadResult.secure_url,
+            price
         })
         await newItem.save();
 

@@ -1,11 +1,11 @@
-import { createInventory, InventoryModel, readAllInventoriesByClerkId, readAllInventoriesByUserId, readInventoryByUserId, readInventoryByUserIdAndItemId } from "../db/inventory";
+import { createInventory, readAllInventoriesByUserId, readInventoryByUserIdAndItemId } from "../db/inventory";
 import express from "express"
 
 export const createInventoryController = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const { userId, itemId, clerkId } = req.body
 
     try {
-        const existingInventory = await readInventoryByUserIdAndItemId(userId, clerkId, itemId)
+        const existingInventory = await readInventoryByUserIdAndItemId(userId, itemId)
 
         if (existingInventory) {
             existingInventory.quantity += 1
@@ -13,7 +13,7 @@ export const createInventoryController = async (req: express.Request, res: expre
             return res.json(existingInventory)
         }
 
-        const newInventory = await createInventory({ userId, itemId, clerkId })
+        const newInventory = await createInventory({ userId, itemId })
 
         return res.json({
             message: "Vat pham da duoc them thanh cong",
@@ -25,14 +25,14 @@ export const createInventoryController = async (req: express.Request, res: expre
     }
 }
 
-export const readAllInventoriesByClerkIdController = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    const { clerkId } = req.params
+export const readAllInventoriesByUserIdIdController = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const { userId } = req.params
 
     try {
-        const inventories = await readAllInventoriesByClerkId(clerkId)
+        const inventories = await readAllInventoriesByUserId(userId)
 
         res.json({
-            message: `Lay danh sach vat pham nguoi choi ${clerkId} thanh cong`,
+            message: `Lay danh sach vat pham nguoi choi ${userId} thanh cong`,
             inventories
         })
     } catch (error) {
