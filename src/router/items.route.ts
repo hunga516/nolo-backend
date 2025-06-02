@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 import { createItemController, readAllItemsController, readItemByIdController } from '../controllers/items.controller';
-import { InventoryModel } from '../db/inventory';
+import { createInventory, InventoryModel, readInventoryByUserIdAndItemId } from '../db/inventory';
 import { readUserByUserId } from '../db/user';
 import { UserModel } from 'db/user';
 
@@ -34,12 +34,25 @@ export default function itemsRouter(router: express.Router) {
             const itemId = "683dd4b0aa3f5db539b03839"
             const existingUser = await readUserByUserId(userId)
 
-            const newInventory = new InventoryModel({
-                itemId,
-                userId: existingUser._id
-            })
+            try {
+                const existingInventory = await readInventoryByUserIdAndItemId(existingUser._id, itemId)
 
-            res.status(200).json({ message: 'Webhook received', newInventory });
+                if (existingInventory) {
+                    existingInventory.quantity += 1
+                    await existingInventory.save()
+                    return res.json(existingInventory)
+                }
+
+                const newInventory = await createInventory({ userId: existingUser._id, itemId })
+
+                return res.json({
+                    message: "Vat pham da duoc them thanh cong",
+                    newInventory
+                })
+            } catch (error) {
+                console.log();
+                return res.status(400)
+            }
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: 'Internal server error' });

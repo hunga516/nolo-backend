@@ -19,7 +19,7 @@ export const readAllInventoriesByUserId = async (userId: string) => {
     return await InventoryModel.find({ userId }).populate('itemId').populate('userId')
 }
 
-export const readInventoryByUserIdAndItemId = async (userId: string, itemId: string) => {
+export const readInventoryByUserIdAndItemId = async (userId: any, itemId: string) => {
     return await InventoryModel.findOne({ userId, itemId }).populate('itemId').populate('userId')
 }
 
