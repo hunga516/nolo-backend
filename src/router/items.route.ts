@@ -2,6 +2,8 @@ import express, { Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 import { createItemController, readAllItemsController, readItemByIdController } from '../controllers/items.controller';
 import { InventoryModel } from '../db/inventory';
+import { readUserByUserId } from '../db/user';
+import { UserModel } from 'db/user';
 
 const upload = multer({ dest: 'uploads/' });
 
@@ -11,7 +13,7 @@ export default function itemsRouter(router: express.Router) {
     router.get('/items', readAllItemsController);
     router.get('/items/:id', readItemByIdController);
 
-    router.post('/items/webhook', (req: Request, res: Response, next: NextFunction) => {
+    router.post('/items/webhook', async (req: Request, res: Response, next: NextFunction) => {
         try {
             // req.body : {
             //     gateway: 'ACB',
@@ -28,14 +30,16 @@ export default function itemsRouter(router: express.Router) {
             //     id: 12741070
             // }
 
-
+            const userId = 7
+            const itemId = "683dd4b0aa3f5db539b03839"
+            const existingUser = await readUserByUserId(userId)
 
             const newInventory = new InventoryModel({
-
+                itemId,
+                userId: existingUser._id
             })
 
-
-            res.status(200).json({ message: 'Webhook received' });
+            res.status(200).json({ message: 'Webhook received', newInventory });
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: 'Internal server error' });

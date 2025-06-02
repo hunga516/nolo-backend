@@ -9,7 +9,6 @@ export const register = async (
     res: Response,
     next: NextFunction
 ) => {
-    console.log("register called", req.body);
     try {
         const { username, password, email, clerkId, imageUrl, name, } = req.body
         if (!username || !password || !email) {

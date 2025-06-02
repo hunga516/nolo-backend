@@ -2,7 +2,7 @@ import { createInventory, readAllInventoriesByUserId, readInventoryByUserIdAndIt
 import express from "express"
 
 export const createInventoryController = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    const { userId, itemId, clerkId } = req.body
+    const { userId, itemId } = req.body
 
     try {
         const existingInventory = await readInventoryByUserIdAndItemId(userId, itemId)

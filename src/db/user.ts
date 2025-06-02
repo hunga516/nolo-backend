@@ -17,9 +17,7 @@ const UserSchema = new mongoose.Schema({
 })
 
 UserSchema.pre('save', async function (next) {
-    console.log("pre-save hook called", this);
     if (this.isNew) {
-        console.log("hook chay ne")
         const counter = await CounterModel.findOneAndUpdate(
             { model: 'User' },
             { $inc: { count: 1 } },
@@ -37,6 +35,7 @@ export const getUserByUsername = (username: string) =>
     UserModel.findOne({ username })
 export const getUserByEmail = (email: string) => UserModel.findOne({ email })
 export const getUserById = (id: string) => UserModel.findById(id)
+export const readUserByUserId = (userId: number) => UserModel.findOne({ userId })
 export const createUser = (user: Record<string, any>) =>
     new UserModel(user).save().then((user) => user.toObject())
 export const updateUser = (id: string, { email }: Record<string, any>) =>
