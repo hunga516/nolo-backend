@@ -3,7 +3,8 @@ import multer from 'multer';
 import { createItemController, readAllItemsController, readItemByIdController } from '../controllers/items.controller';
 import { createInventory, InventoryModel, readInventoryByUserIdAndItemId } from '../db/inventory';
 import { readUserByUserId } from '../db/user';
-import { UserModel } from 'db/user';
+import { UserModel } from '../db/user';
+import { readItemById, readItemByName } from '../db/item';
 
 const upload = multer({ dest: 'uploads/' });
 
@@ -30,12 +31,15 @@ export default function itemsRouter(router: express.Router) {
             //     id: 12741070
             // }
 
-            const userId = 7
-            const itemId = "683dd4b0aa3f5db539b03839"
-            const existingUser = await readUserByUserId(userId)
+            const data = req.body.content
+            const newData = data.split(" ")
 
+            const itemName = newData[0]
+            const userId = parseInt(newData[1])
+            const existingUser = await readUserByUserId(userId)
+            const existingItem = await readItemByName(itemName)
             try {
-                const existingInventory = await readInventoryByUserIdAndItemId(existingUser._id, itemId)
+                const existingInventory = await readInventoryByUserIdAndItemId(existingUser._id, existingItem._id)
 
                 if (existingInventory) {
                     existingInventory.quantity += 1
@@ -43,7 +47,7 @@ export default function itemsRouter(router: express.Router) {
                     return res.json(existingInventory)
                 }
 
-                const newInventory = await createInventory({ userId: existingUser._id, itemId })
+                const newInventory = await createInventory({ userId: existingUser._id, itemId: existingItem._id })
 
                 return res.json({
                     message: "Vat pham da duoc them thanh cong",
