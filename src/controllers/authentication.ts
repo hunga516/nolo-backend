@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express'
-import { createUser, getUserByEmail, getUserByUsername } from '../db/user'
+import { createUser, getUserByEmail, getUserByUsername, UserModel } from '../db/user'
 import { authentication, random } from '../helpers'
 import { identity, merge } from 'lodash'
 import jwt from 'jsonwebtoken'
@@ -9,6 +9,7 @@ export const register = async (
     res: Response,
     next: NextFunction
 ) => {
+    console.log("register called", req.body);
     try {
         const { username, password, email, clerkId, imageUrl, name, } = req.body
         if (!username || !password || !email) {
@@ -26,7 +27,7 @@ export const register = async (
         }
 
         const salt = random()
-        const user = await createUser({
+        const user = new UserModel({
             email,
             username,
             clerkId,
@@ -37,8 +38,9 @@ export const register = async (
                 password: authentication(salt, password),
             },
         })
+        await user.save()
 
-        return res.status(200).json(user).end()
+        return res.status(200).json(user.toObject()).end()
     } catch (e) {
         console.log(e)
         return res.sendStatus(400)

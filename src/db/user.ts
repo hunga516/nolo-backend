@@ -1,6 +1,8 @@
 import * as mongoose from 'mongoose'
+import { CounterModel } from './counter'
 
 const UserSchema = new mongoose.Schema({
+    userId: { type: Number, unique: true },
     username: { type: String, required: true },
     email: { type: String, required: true },
     clerkId: { type: String },
@@ -12,6 +14,20 @@ const UserSchema = new mongoose.Schema({
         password: { type: String, required: true, select: false },
         salt: { type: String, select: false },
     },
+})
+
+UserSchema.pre('save', async function (next) {
+    console.log("pre-save hook called", this);
+    if (this.isNew) {
+        console.log("hook chay ne")
+        const counter = await CounterModel.findOneAndUpdate(
+            { model: 'User' },
+            { $inc: { count: 1 } },
+            { new: true, upsert: true }
+        )
+        this.userId = counter.count
+    }
+    next()
 })
 
 export const UserModel = mongoose.model('User', UserSchema)
