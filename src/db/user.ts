@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema({
     clerkId: { type: String },
     imageUrl: { type: String },
     name: { type: String },
+    coin: { type: Number, default: 0 },
     subscriberCount: { type: Number, default: 0 },
     isSubscriberSubscribed: { type: Boolean },
     authentication: {
@@ -35,7 +36,7 @@ export const getUserByUsername = (username: string) =>
     UserModel.findOne({ username })
 export const getUserByEmail = (email: string) => UserModel.findOne({ email })
 export const getUserById = (id: string) => UserModel.findById(id)
-export const readUserByUserId = (userId: number) => UserModel.findOne({ userId }).lean()
+export const readUserByUserId = (userId: number) => UserModel.findOne({ userId })
 export const createUser = (user: Record<string, any>) =>
     new UserModel(user).save().then((user) => user.toObject())
 export const updateUser = (id: string, { email }: Record<string, any>) =>

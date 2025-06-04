@@ -34,8 +34,18 @@ export default function itemsRouter(router: express.Router) {
             const data = req.body.content
             const newData = data.split(" ")
 
-            const itemName = newData[0]
-            const userId = parseInt(newData[1])
+            const userId = Number(newData[1])
+            const itemName = newData[1]
+
+            if (!itemName) {
+                const existingUser = await readUserByUserId(userId)
+                existingUser.coin += req.body.transferAmount
+                await existingUser.save()
+                return res.json({
+                    message: "So du tai khoan da duoc cap nhat",
+                });
+            }
+
             const existingUser = await readUserByUserId(userId)
             const existingItem = await readItemByName(itemName)
             try {
