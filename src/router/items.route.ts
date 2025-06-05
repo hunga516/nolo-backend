@@ -31,6 +31,9 @@ export default function itemsRouter(router: express.Router) {
             //     id: 12741070
             // }
 
+            console.log("webhook goc", req.body);
+
+
             const data = req.body.content
             const newData = data.split(" ")
 
