@@ -8,7 +8,7 @@ const UserSchema = new mongoose.Schema({
     clerkId: { type: String },
     imageUrl: { type: String },
     name: { type: String },
-    coin: { type: Number, default: 0 },
+    coins: { type: Number, default: 0 },
     subscriberCount: { type: Number, default: 0 },
     isSubscriberSubscribed: { type: Boolean },
     authentication: {

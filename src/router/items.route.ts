@@ -44,7 +44,7 @@ export default function itemsRouter(router: express.Router) {
 
             if (!existingItem) {
                 const existingUser = await readUserByUserId(userId)
-                existingUser.coin += req.body.transferAmount
+                existingUser.coins += req.body.transferAmount
                 await existingUser.save()
                 return res.json({
                     message: "So du tai khoan da duoc cap nhat",
