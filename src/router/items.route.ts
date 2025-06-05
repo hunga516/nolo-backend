@@ -34,7 +34,7 @@ export default function itemsRouter(router: express.Router) {
             const data = req.body.content
             const newData = data.split(" ")
 
-            const userId = Number(newData[1])
+            const userId = Number(newData[0])
             const itemName = newData[1]
 
             if (!itemName) {
