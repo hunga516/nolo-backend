@@ -39,8 +39,10 @@ export default function itemsRouter(router: express.Router) {
 
             const userId = Number(newData[0])
             const itemName = newData[1]
+            const existingUser = await readUserByUserId(userId)
+            const existingItem = await readItemByName(itemName)
 
-            if (!itemName) {
+            if (!existingItem) {
                 const existingUser = await readUserByUserId(userId)
                 existingUser.coin += req.body.transferAmount
                 await existingUser.save()
@@ -49,8 +51,6 @@ export default function itemsRouter(router: express.Router) {
                 });
             }
 
-            const existingUser = await readUserByUserId(userId)
-            const existingItem = await readItemByName(itemName)
             try {
                 const existingInventory = await readInventoryByUserIdAndItemId(existingUser._id, existingItem._id)
 
