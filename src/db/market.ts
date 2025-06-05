@@ -16,6 +16,10 @@ export const readAllMarkets = async () => {
     return await MarketModel.find().populate("itemId").populate("userId");
 }
 
+export const readMarket = async (id: string) => {
+    return await MarketModel.findById(id).populate("itemId").populate("userId");
+}
+
 export const createMarket = async (market: Record<string, any>) => {
     const newMarket = new MarketModel(market)
     await newMarket.save();
