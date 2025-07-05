@@ -27,7 +27,7 @@ export const readAllInventoriesByClerkId = async (clerkId: string) => {
     return await InventoryModel.find({ clerkId }).populate('itemId')
 }
 
-export const createInventory = async (inventory: Record<string, any>) => {
+export const createInventory = async (inventory: Record<string, any>) => {    //ngan gon hon export const createInventory (inventory: Record<string, any>) => new InventoryModel(inventory).save()
     const newInventory = new InventoryModel(inventory)
     await newInventory.save()
 
