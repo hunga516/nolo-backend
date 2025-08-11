@@ -8,7 +8,7 @@ import { marketRoute } from './markets.route'
 
 const router = express.Router()
 
-export default function setupRoutes(): express.Router {
+export default function setupRoutes() {
     authenticationRouter(router)
     usersRoute(router)
     itemsRouter(router)

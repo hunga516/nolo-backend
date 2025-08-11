@@ -1,6 +1,7 @@
 import express from 'express'
 import { db } from '../db/index'
 import { usersTable } from '../db/schema'
+import { clerkClient } from '@clerk/express'
 
 import { deleteUserById, getUserById, getUsers, UserModel, updateUser, readUserByClerkId } from '../db/user'
 
@@ -69,6 +70,7 @@ export const readUserByClerkIdController = async (req: express.Request, res: exp
     }
 }
 
+
 // export const readUserPostGresController = async (
 //     req: express.Request,
 //     res: express.Response,
@@ -82,3 +84,19 @@ export const readUserByClerkIdController = async (req: express.Request, res: exp
 //         console.log(error)
 //     }
 // }
+
+export const createCidController = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const { cid, clerkId } = req.body
+
+    try {
+        await clerkClient.users.updateUserMetadata(clerkId, {
+            publicMetadata: {
+                cid
+            }
+        })
+        res.status(200).json("Xác thực thành công")
+    } catch (error) {
+        console.log(error);
+        res.status(401)
+    }
+}
