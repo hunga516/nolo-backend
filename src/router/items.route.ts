@@ -31,7 +31,7 @@ export default function itemsRouter(router: express.Router) {
             //     id: 12741070
             // }
 
-            console.log("webhook goc", req.body);
+            console.log("webhook goc sdasdad", req.body);
 
 
             const data = req.body.content
@@ -41,7 +41,7 @@ export default function itemsRouter(router: express.Router) {
             // const userId = Number(newData)
             const itemName = newData[1]
             // const existingUser = await readUserByUserId(8)
-            const existingItem = await readItemByName("k co item")
+            // const existingItem = await readItemByName("k co item")
 
             // if (!existingItem) {
             //     const existingUser = await readUserByUserId(8)
