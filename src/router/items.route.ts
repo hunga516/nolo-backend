@@ -38,13 +38,13 @@ export default function itemsRouter(router: express.Router) {
             // const newData = data.split(" ")
             const newData = data.split("-").pop();
 
-            const userId = Number(newData)
+            // const userId = Number(newData)
             const itemName = newData[1]
-            const existingUser = await readUserByUserId(userId)
-            const existingItem = await readItemByName(itemName)
+            // const existingUser = await readUserByUserId(8)
+            const existingItem = await readItemByName("k co item")
 
             if (!existingItem) {
-                const existingUser = await readUserByUserId(userId)
+                const existingUser = await readUserByUserId(8)
                 existingUser.coins += req.body.transferAmount
                 await existingUser.save()
                 return res.json({
@@ -52,25 +52,25 @@ export default function itemsRouter(router: express.Router) {
                 });
             }
 
-            try {
-                const existingInventory = await readInventoryByUserIdAndItemId(existingUser._id, existingItem._id)
+            // try {
+            //     const existingInventory = await readInventoryByUserIdAndItemId(existingUser._id, existingItem._id)
 
-                if (existingInventory) {
-                    existingInventory.quantity += 1
-                    await existingInventory.save()
-                    return res.json(existingInventory)
-                }
+            //     if (existingInventory) {
+            //         existingInventory.quantity += 1
+            //         await existingInventory.save()
+            //         return res.json(existingInventory)
+            //     }
 
-                const newInventory = await createInventory({ userId: existingUser._id, itemId: existingItem._id })
+            //     const newInventory = await createInventory({ userId: existingUser._id, itemId: existingItem._id })
 
-                return res.json({
-                    message: "Vat pham da duoc them thanh cong",
-                    newInventory
-                })
-            } catch (error) {
-                console.log();
-                return res.status(400)
-            }
+            //     return res.json({
+            //         message: "Vat pham da duoc them thanh cong",
+            //         newInventory
+            //     })
+            // } catch (error) {
+            //     console.log();
+            //     return res.status(400)
+            // }
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: 'Internal server error' });
