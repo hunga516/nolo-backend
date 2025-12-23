@@ -36,7 +36,7 @@ export default function itemsRouter(router: express.Router) {
             // Extract payment content from the transaction string
             // Format: MBVCB.xxx.xxx.{CONTENT}.CT...
             const content = req.body.content
-            const contentMatch = content.match(/MBVCB\.[^.]+\.[^.]+\.([^.]+)\./)
+            const contentMatch = content.match(/\.(\d+)\.CT/)
             const paymentContent = contentMatch ? contentMatch[1] : content
 
             const data = paymentContent.trim()
