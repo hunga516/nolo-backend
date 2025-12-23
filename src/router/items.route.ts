@@ -33,22 +33,57 @@ export default function itemsRouter(router: express.Router) {
 
             console.log("webhook goc", req.body);
 
+            // Extract payment content from MBVCB transaction format
+            // Format: MBVCB.xxx.xxx.{CONTENT}.CT...
+            const content = req.body.content
+            const contentMatch = content.match(/MBVCB\.[^.]+\.[^.]+\.([^.]+)\./);
+            const paymentContent = contentMatch ? contentMatch[1] : content;
+            
+            console.log("Payment content extracted:", paymentContent);
 
-            const data = req.body.content
-            const newData = data.split(" ")
+            // Parse payment content: can be "userId" or "userId itemName"
+            const data = paymentContent.trim();
+            const newData = data.split(" ");
 
-            // const userId = Number(newData[0])
-            const userId = Number("8")  // hardcode userId for testing
-            const itemName = newData[1]
-            const existingUser = await readUserByUserId(userId)
-            const existingItem = await readItemByName(itemName)
+            const userId = Number(newData[0]);
+            const itemName = newData[1]; // Can be undefined for auto top-up
+            
+            // Validate userId
+            if (isNaN(userId)) {
+                return res.status(400).json({
+                    message: "Invalid userId in payment content"
+                });
+            }
 
-            if (!existingItem) {
-                const existingUser = await readUserByUserId(userId)
-                existingUser.coins += req.body.transferAmount
-                await existingUser.save()
+            const existingUser = await readUserByUserId(userId);
+            
+            if (!existingUser) {
+                return res.status(404).json({
+                    message: "User not found"
+                });
+            }
+
+            // If no itemName provided, treat as auto top-up
+            if (!itemName) {
+                existingUser.coins += req.body.transferAmount;
+                await existingUser.save();
                 return res.json({
                     message: "So du tai khoan da duoc cap nhat",
+                    coins: existingUser.coins,
+                    amount: req.body.transferAmount
+                });
+            }
+
+            const existingItem = await readItemByName(itemName);
+
+            if (!existingItem) {
+                // Item not found, treat as auto top-up
+                existingUser.coins += req.body.transferAmount;
+                await existingUser.save();
+                return res.json({
+                    message: "So du tai khoan da duoc cap nhat",
+                    coins: existingUser.coins,
+                    amount: req.body.transferAmount
                 });
             }
 

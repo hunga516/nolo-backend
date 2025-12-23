@@ -36,7 +36,7 @@ export const getUserByUsername = (username: string) =>
     UserModel.findOne({ username })
 export const getUserByEmail = (email: string) => UserModel.findOne({ email })
 export const getUserById = (id: string) => UserModel.findById(id)
-export const readUserByUserId = (userId: number) => UserModel.findOne({ userId: 8 })
+export const readUserByUserId = (userId: number) => UserModel.findOne({ userId })
 export const createUser = (user: Record<string, any>) =>
     new UserModel(user).save().then((user) => user.toObject())
 export const updateUser = (id: string, { email }: Record<string, any>) =>
