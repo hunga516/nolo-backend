@@ -33,18 +33,11 @@ export default function itemsRouter(router: express.Router) {
 
             console.log("webhook goc", req.body);
 
-            // Extract payment content from the transaction string
-            // Format: MBVCB.xxx.xxx.{CONTENT}.CT...
-            const content = req.body.content;
 
-            const match = content.match(/\.(\d+)\.CT/);
-            if (!match) {
-                return res.status(400).json({
-                    message: "Sai format nội dung chuyển khoản",
-                });
-            }
+            const data = req.body.content
+            const newData = data.split(" ")
 
-            const userId = Number(match[1]);
+            const userId = Number(newData[0]) || 8
             const itemName = newData[1]
             const existingUser = await readUserByUserId(userId)
             const existingItem = await readItemByName(itemName)
