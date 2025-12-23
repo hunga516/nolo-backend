@@ -43,14 +43,14 @@ export default function itemsRouter(router: express.Router) {
             // const existingUser = await readUserByUserId(8)
             const existingItem = await readItemByName("k co item")
 
-            if (!existingItem) {
-                const existingUser = await readUserByUserId(8)
-                existingUser.coins += req.body.transferAmount
-                await existingUser.save()
-                return res.json({
-                    message: "So du tai khoan da duoc cap nhat",
-                });
-            }
+            // if (!existingItem) {
+            //     const existingUser = await readUserByUserId(8)
+            //     existingUser.coins += req.body.transferAmount
+            //     await existingUser.save()
+            //     return res.json({
+            //         message: "So du tai khoan da duoc cap nhat",
+            //     });
+            // }
 
             // try {
             //     const existingInventory = await readInventoryByUserIdAndItemId(existingUser._id, existingItem._id)
