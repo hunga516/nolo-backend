@@ -1,1 +1,0 @@
-{"version":3,"file":"authentication.js","sourceRoot":"","sources":["../../src/router/authentication.ts"],"names":[],"mappings":";;AAGA,uCAIC;AAND,kEAA+D;AAE/D,SAAwB,oBAAoB,CAAC,MAAsB;IAC/D,MAAM,CAAC,IAAI,CAAC,gBAAgB,EAAE,yBAAQ,CAAC,CAAA;IACvC,MAAM,CAAC,IAAI,CAAC,aAAa,EAAE,sBAAK,CAAC,CAAA;IACjC,OAAO,MAAM,CAAA;AACjB,CAAC"}
