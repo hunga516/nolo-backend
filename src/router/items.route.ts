@@ -38,7 +38,7 @@ export default function itemsRouter(router: express.Router) {
             // const newData = data.split(" ")
             const newData = data.split("-").pop();
 
-            const userId = Number(newData[0])
+            const userId = Number(newData)
             const itemName = newData[1]
             const existingUser = await readUserByUserId(userId)
             const existingItem = await readItemByName(itemName)
